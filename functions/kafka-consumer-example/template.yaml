@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: An AWS Serverless Specification template describing your function.
+Parameters:
+  KafkaBroker:
+    Description: Kafka Broker
+    Type: String
+  VPCSubnet:
+    Description: VPC Subnet
+    Type: String
+  VPCSecurityGroup:
+    Description: VPC Security Group
+    Type: String
+  Role:
+    Description: Lambda Role
+    Type: String
+Resources:
+  lambdaconsumertest:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      PackageType: Image
+      ImageConfig:
+        Command: ["lambda_function.lambda_handler"]
+      Description: 'Lambda Kafka consumer example'
+      MemorySize: 128
+      Timeout: 3
+      Role: 'arn:aws:iam::498507138819:role/lamdba-consumer-test'
+      Events:
+        SelfManagedKafkaEvent:
+          Type: SelfManagedKafka
+          Properties:
+            BatchSize: 1000
+            Enabled: true
+            KafkaBootstrapServers:
+              - !Ref KafkaBroker
+            SourceAccessConfigurations:
+              - Type: VPC_SUBNET
+                URI: arn:aws:ec2:us-east-1:498507138819:vpc/vpc-08b38eec539482315
+              - Type: VPC_SECURITY_GROUP
+                URI: arn:aws:ec2:us-east-1:498507138819:security-group/sg-0701148b51097f46f
+            Topics:
+              - lambda-consumer-test
+    Metadata:
+      Dockerfile: Dockerfile
+      DockerContext: ./
+      DockerTag: python3.9-v1
+Outputs:
+  FunctionArn:
+    Description: "Lambda consumer function ARN"
+    Value: !GetAtt lambdaconsumertest.Arn
