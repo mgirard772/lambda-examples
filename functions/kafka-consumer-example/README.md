@@ -1,20 +1,17 @@
 #kafka-consumer-example
 
-Creates a simple function that will consume messages from Kafka using a Kafka topic as an event source
+Creates a simple function that will consume messages from Kafka using a Kafka topic as an event source.
 
 ## Requirements
 - Local Kafka scripts (for producing messages)
 - Kafka setup in AWS (EC2 or MSK)
 
 ## Setup
-https://aws.amazon.com/blogs/compute/using-self-hosted-apache-kafka-as-an-event-source-for-aws-lambda/
-https://aws.amazon.com/blogs/compute/setting-up-aws-lambda-with-an-apache-kafka-cluster-within-a-vpc/
+Follow these guides to setup your VPC and Kafka cluster:
+- https://aws.amazon.com/blogs/compute/using-self-hosted-apache-kafka-as-an-event-source-for-aws-lambda/
+- https://aws.amazon.com/blogs/compute/setting-up-aws-lambda-with-an-apache-kafka-cluster-within-a-vpc/
 
-Create ECR Image Repository
-```shell script
-aws ecr create-repository --repository-name lambda-consumer-test \
---image-tag-mutability IMMUTABLE --image-scanning-configuration scanOnPush=true
-```
+Create a `samconfig.toml` file for easy deployment.
 ## Usage
 
 Produce a message to the Kafka topic (run inside kafka bin folder)
@@ -30,6 +27,16 @@ aws logs tail "/aws/lambda/your-lambda-name" --follow
 Local invocation
 ```shell script
 sam local invoke -e event.json
+```
+
+Build
+```shell script
+sam build
+```
+
+Deploy
+```shell script
+sam deploy --resolve-image-repos --resolve-s3
 ```
 
 ## Event Format
@@ -74,4 +81,7 @@ sam local invoke -e event.json
 
 - Your VPC/Subnets must have either a NAT Gateway or VPC Endpoints setup 
 to allow access to Lambda, STS, and SecretsManager.
+
+## References
+[AWS::Lambda::EventSourceMapping](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html)
 

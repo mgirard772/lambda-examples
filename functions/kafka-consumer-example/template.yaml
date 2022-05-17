@@ -5,14 +5,17 @@ Parameters:
   KafkaBroker:
     Description: Kafka Broker
     Type: String
-  VPCSubnet:
-    Description: VPC Subnet
-    Type: String
-  VPCSecurityGroup:
-    Description: VPC Security Group
+  Topic:
+    Description: Kafka topic to monitor
     Type: String
   Role:
     Description: Lambda Role
+    Type: String
+  VPCSubnet:
+    Description: VPC Subnet ID
+    Type: String
+  VPCSecurityGroup:
+    Description: VPC Security Group ID
     Type: String
 Resources:
   lambdaconsumertest:
@@ -24,7 +27,7 @@ Resources:
       Description: 'Lambda Kafka consumer example'
       MemorySize: 128
       Timeout: 3
-      Role: 'arn:aws:iam::498507138819:role/lamdba-consumer-test'
+      Role: !Sub "${Role}"
       Events:
         SelfManagedKafkaEvent:
           Type: SelfManagedKafka
@@ -35,11 +38,11 @@ Resources:
               - !Ref KafkaBroker
             SourceAccessConfigurations:
               - Type: VPC_SUBNET
-                URI: arn:aws:ec2:us-east-1:498507138819:vpc/vpc-08b38eec539482315
+                URI: !Sub "subnet:${VPCSubnet}"
               - Type: VPC_SECURITY_GROUP
-                URI: arn:aws:ec2:us-east-1:498507138819:security-group/sg-0701148b51097f46f
+                URI: !Sub "security_group:${VPCSecurityGroup}"
             Topics:
-              - lambda-consumer-test
+              - !Ref Topic
     Metadata:
       Dockerfile: Dockerfile
       DockerContext: ./
