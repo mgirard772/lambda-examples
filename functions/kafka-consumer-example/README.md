@@ -1,42 +1,52 @@
 #kafka-consumer-example
-
 Creates a simple function that will consume messages from Kafka using a Kafka topic as an event source.
 
 ## Requirements
 - Local Kafka scripts (for producing messages)
 - Kafka setup in AWS (EC2 or MSK)
+- AWS CLI
+- AWS SAM
+- Docker
 
 ## Setup
-Follow these guides to setup your VPC and Kafka cluster:
-- https://aws.amazon.com/blogs/compute/using-self-hosted-apache-kafka-as-an-event-source-for-aws-lambda/
-- https://aws.amazon.com/blogs/compute/setting-up-aws-lambda-with-an-apache-kafka-cluster-within-a-vpc/
+1. Setup a Kafka cluster in EC2 You can also use MSK, but will have to modify the template a bit. See guides in [References](#references)
+2. Ensure you VPC is setup with a NAT Gateway or VPC endpoints for accessing Lambda, STS and Secrets Manager.
+3. Create a .env file with all the necessary fields referenced in samconfig-template.toml
+4. Run `make config` to generate your `samconfig.toml` file.
+5. Run `make build` to have SAM build your image and template
+6. Run `make deploy` to deploy your lambda function to AWS
 
-Create a `samconfig.toml` file for easy deployment.
+If you make changes to your config, function or template, just run the specific `make` command or `make all` again.
+
 ## Usage
-
-Produce a message to the Kafka topic (run inside kafka bin folder)
+Generate config file
 ```shell script
-./kafka-console-producer.sh --bootstrap-server $KAFKA_ADDRESS --topic $TOPIC
+make config
 ```
 
-Monitor lamdba logs in real-time
+Build function image
 ```shell script
-aws logs tail "/aws/lambda/your-lambda-name" --follow
+make build
 ```
 
-Local invocation
+Local invocation. This is to test how your function will handle an event.
 ```shell script
 sam local invoke -e event.json
 ```
 
-Build
-```shell script
-sam build
-```
-
 Deploy
 ```shell script
-sam deploy --resolve-image-repos --resolve-s3
+make deploy
+```
+
+Configure, Build and Deploy
+```shell script
+make all
+```
+
+Monitor lamdba logs in real-time
+```shell script
+sam logs --name lambdaconsumertest --stack-name lambda-consumer-test-sam --tail
 ```
 
 ## Event Format
@@ -78,11 +88,13 @@ sam deploy --resolve-image-repos --resolve-s3
 ```
 
 ## Gotchas
-
-- Your VPC/Subnets must have either a NAT Gateway or VPC Endpoints setup 
-to allow access to Lambda, STS, and SecretsManager.
+- Your Subnet/VPC must have either a NAT Gateway or VPC Endpoints setup 
+to allow access to Lambda, STS, and SecretsManager. These endpoints must be associated with the security groups associated with
+the Kafka brokers.
 
 ## References
-[AWS::Lambda::EventSourceMapping](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html)
-[EventSource::SelfManagedKafka](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-property-function-selfmanagedkafka.html)
+- [AWS::Lambda::EventSourceMapping](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html)
+- [EventSource::SelfManagedKafka](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-property-function-selfmanagedkafka.html)
+- [Setup Lambda with self-hosted Kafka in a VPC](https://aws.amazon.com/blogs/compute/setting-up-aws-lambda-with-an-apache-kafka-cluster-within-a-vpc/)
+- [Using self-hosted Kafka as an event source for Lambda](https://aws.amazon.com/blogs/compute/using-self-hosted-apache-kafka-as-an-event-source-for-aws-lambda/)
 

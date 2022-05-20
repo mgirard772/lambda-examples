@@ -1,0 +1,12 @@
+version=0.1
+[default.deploy.parameters]
+stack_name = \"lambda-consumer-test-sam\"
+s3_prefix = \"lambda-consumer-test-sam\"
+parameter_overrides = [
+\"KafkaBroker=${KAFKA_BROKER}\",
+\"VPCSubnet=${VPC_SUBNET_ID}\",
+\"VPCSecurityGroup=${VPC_SECURITY_GROUP_ID}\",
+\"Role=${LAMBDA_ROLE}\",
+\"Topic=${KAFKA_TOPIC}\",
+\"SecretArn=${KAFKA_SECRET_ARN}\"
+]

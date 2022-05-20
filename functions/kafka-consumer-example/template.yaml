@@ -17,6 +17,9 @@ Parameters:
   VPCSecurityGroup:
     Description: VPC Security Group ID
     Type: String
+  SecretArn:
+    Description: ARN to secret in SecretsManager containing username and password
+    Type: String
 Resources:
   lambdaconsumertest:
     Type: 'AWS::Serverless::Function'
@@ -41,6 +44,8 @@ Resources:
                 URI: !Sub "subnet:${VPCSubnet}"
               - Type: VPC_SECURITY_GROUP
                 URI: !Sub "security_group:${VPCSecurityGroup}"
+              - Type: BASIC_AUTH
+                URI: !Ref SecretArn
             Topics:
               - !Ref Topic
     Metadata:

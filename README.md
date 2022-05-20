@@ -17,5 +17,6 @@ sam init --runtime python3.9 --dependency-manager pip --app-template hello-world
 
 ## References
 [Using image support with SAM](https://aws.amazon.com/blogs/compute/using-container-image-support-for-aws-lambda-with-aws-sam/)
+[sam deploy](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-deploy.html)
 
 
