@@ -1,4 +1,4 @@
-#kafka-consumer-example
+# kafka-consumer-example
 Creates a simple function that will consume messages from Kafka using a Kafka topic as an event source.
 
 ## Requirements
