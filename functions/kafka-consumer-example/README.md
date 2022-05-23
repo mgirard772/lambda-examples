@@ -94,6 +94,7 @@ the Kafka brokers.
 
 ## References
 - [AWS::Lambda::EventSourceMapping](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html)
+- [Using Lambda with self-managed Kafka] (https://docs.aws.amazon.com/lambda/latest/dg/with-kafka.html)
 - [EventSource::SelfManagedKafka](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-property-function-selfmanagedkafka.html)
 - [Setup Lambda with self-hosted Kafka in a VPC](https://aws.amazon.com/blogs/compute/setting-up-aws-lambda-with-an-apache-kafka-cluster-within-a-vpc/)
 - [Using self-hosted Kafka as an event source for Lambda](https://aws.amazon.com/blogs/compute/using-self-hosted-apache-kafka-as-an-event-source-for-aws-lambda/)
