@@ -31,7 +31,7 @@ make build
 
 Local invocation. This is to test how your function will handle an event.
 ```shell script
-sam local invoke -e event.json
+sam local invoke -e events/event.json
 ```
 
 Deploy
