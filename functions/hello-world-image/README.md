@@ -54,7 +54,19 @@ Value               https://du4d63evy9.execute-api.us-east-1.amazonaws.com/matt/
 ```
 
 Before calling the API, you need to get the API key for the endpoint from the AWS console.
+The link to get this key is output in the console as well:
 
+```commandline
+Key                 HelloWorldApiKey                                                                                                                                                       
+Description         You can find your API Key in the AWS console: (Put in the request HEADER as x-api-key)                                                                                 
+Value               https://console.aws.amazon.com/apigateway/home?region=us-east-1#/api-keys/kk6fo5a4s5  
+```
+You can use the above link to get the API key using the API. Alternatively you can use the AWS CLI
+to get the key in the terminal:
+
+```bash
+aws apigateway get-api-key --api-key ${API_KEY_ID} --include-value
+```
 
 # Cleanup
 To delete the stack, use the following make command
