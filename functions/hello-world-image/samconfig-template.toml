@@ -1,0 +1,8 @@
+version=0.1
+[default.deploy.parameters]
+stack_name = \"hello-world-${StageName}\"
+s3_prefix = \"hello-world-${StageName}\"
+region = \"us-east-1\"
+parameter_overrides = [
+\"StageName=${StageName}\",
+]

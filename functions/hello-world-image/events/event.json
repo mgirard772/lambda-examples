@@ -1,5 +1,5 @@
 {
-  "body": "{\"message\": \"hello Tufts\"}",
+  "body": "{\"message\": \"world\"}",
   "resource": "/hello",
   "path": "/hello",
   "httpMethod": "GET",
