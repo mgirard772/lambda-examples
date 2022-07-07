@@ -33,6 +33,7 @@ def lambda_handler(event, context):
 
     #     raise e
 
+    print(json.dumps(event, indent=2))
     try:
         message = json.loads(event.get('body','')).get('message')
     except Exception as e:
