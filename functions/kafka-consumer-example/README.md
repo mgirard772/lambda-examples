@@ -31,7 +31,7 @@ make build
 
 Local invocation. This is to test how your function will handle an event.
 ```shell script
-sam local invoke -e events/event.json
+make test
 ```
 
 Deploy
@@ -39,14 +39,15 @@ Deploy
 make deploy
 ```
 
-Configure, Build and Deploy
-```shell script
-make all
-```
 
 Monitor lamdba logs in real-time
 ```shell script
-sam logs --name lambdaconsumertest --stack-name lambda-consumer-test-sam --tail
+make logs
+```
+
+Delete stack
+```shell script
+sam delete --stack-name lambda-consumer-test-sam
 ```
 
 ## Event Format
@@ -94,6 +95,7 @@ the Kafka brokers.
 
 ## References
 - [AWS::Lambda::EventSourceMapping](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html)
+- [Batching Behavior](https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html#invocation-eventsourcemapping-batching)
 - [Using Lambda with self-managed Kafka] (https://docs.aws.amazon.com/lambda/latest/dg/with-kafka.html)
 - [EventSource::SelfManagedKafka](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-property-function-selfmanagedkafka.html)
 - [Setup Lambda with self-hosted Kafka in a VPC](https://aws.amazon.com/blogs/compute/setting-up-aws-lambda-with-an-apache-kafka-cluster-within-a-vpc/)

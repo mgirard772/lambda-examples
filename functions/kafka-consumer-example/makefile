@@ -2,7 +2,10 @@ config:
 	./gen-config.sh
 build:
 	sam build
-deploy:
+test: build
+	sam local invoke -e events/event.json
+deploy: build config
 	sam deploy --resolve-image-repos --resolve-s3
-build-deploy: build deploy
-all: config build deploy
+logs:
+	sam logs --stack-name lambda-consumer-test-sam --tail
+

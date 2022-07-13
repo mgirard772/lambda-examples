@@ -37,6 +37,7 @@ Resources:
           Properties:
             BatchSize: 1000
             Enabled: true
+            MaximumBatchingWindowInSeconds: 1
             KafkaBootstrapServers:
               - !Ref KafkaBroker
             SourceAccessConfigurations:
